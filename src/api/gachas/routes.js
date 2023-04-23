@@ -1,17 +1,8 @@
-const { 
-    addGachaHandler, 
-    getAllGachasHandler, 
-    getGachaByIdHandler, 
-    editGachaByIdHandler,
-    editStatusGachaByIdHandler,
-    deleteGachaByIdHandler
-} = require('./handler');
-
-const routes = [
+const routes = (handler) => [
     {
         method: 'POST',
         path: '/gacha',
-        handler: addGachaHandler,
+        handler: handler.postGachaHandler,
         options: {
             cors: {
                 origin: ['*'],
@@ -21,7 +12,7 @@ const routes = [
     {
         method: 'GET',
         path: '/gacha',
-        handler: getAllGachasHandler,
+        handler: handler.getAllGachasHandler,
         options: {
             cors: {
                 origin: ['*'],
@@ -31,7 +22,7 @@ const routes = [
     {
         method: 'GET',
         path: '/gacha/{id}',
-        handler: getGachaByIdHandler,
+        handler: handler.getGachaByIdHandler,
         options: {
             cors: {
                 origin: ['*'],
@@ -41,7 +32,7 @@ const routes = [
     {
         method: 'PUT',
         path: '/gacha/{id}',
-        handler: editGachaByIdHandler,
+        handler: handler.putGachaByIdHandler,
         options: {
             cors: {
                 origin: ['*'],
@@ -51,7 +42,7 @@ const routes = [
     {
         method: 'PUT',
         path: '/gacha/status/{id}',
-        handler: editStatusGachaByIdHandler,
+        handler: handler.putStatusGachaByIdHandler,
         options: {
             cors: {
                 origin: ['*'],
@@ -61,14 +52,13 @@ const routes = [
     {
         method: 'DELETE',
         path: '/gacha/{id}',
-        handler: deleteGachaByIdHandler,
+        handler: handler.deleteGachaByIdHandler,
         options: {
             cors: {
                 origin: ['*'],
             }
         },
     },
-
 ];
 
 module.exports = routes;
