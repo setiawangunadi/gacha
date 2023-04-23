@@ -1,6 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const gachas = require('./api/gachas');
 const GachasService = require('./services/inMemory/GachasService');
+const GachasValidator = require('./validator/gachas');
 
 const init = async () => {
     const gachasService = new GachasService();
@@ -19,6 +20,7 @@ const init = async () => {
         plugin: gachas,
         options: {
             service: gachasService,
+            validator: GachasValidator,
         },
     });
 

@@ -1,6 +1,9 @@
+const ClientError = require("../../exceptions/ClientError");
+
 class GachasHandler {
-    constructor(service) {
+    constructor(service, validator) {
         this._service = service;
+        this._validator = validator;
 
         this.postGachaHandler = this.postGachaHandler.bind(this);
         this.getAllGachasHandler = this.getAllGachasHandler.bind(this);
@@ -12,6 +15,7 @@ class GachasHandler {
 
     postGachaHandler(request, h) {
         try {
+            this._validator.validateGachaPayload(request.payload);
             const { name, urlPhoto, position, number, isGet, totalGet } = request.payload;
 
             const gachaId = this._service.addGacha({ name, urlPhoto, position, number, isGet, totalGet });
@@ -26,11 +30,21 @@ class GachasHandler {
             response.code(201);
             return response;
         } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
             const response = h.response({
-                status: 'fail',
-                message: error.message,
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
             });
-            response.code(400);
+            response.code(500);
+            console.error(error);
             return response;
         }
     }
@@ -65,17 +79,28 @@ class GachasHandler {
                 },
             };    
         } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
             const response = h.response({
-                status: 'fail',
-                message: error.message,
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
             });
-            response.code(404);
+            response.code(500);
+            console.error(error);
             return response;
         }
     }
 
     putGachaByIdHandler(request, h) {
         try {
+            this._validator.validateNotePayload(request.payload);
             const { id } = request.params;
 
             this._service.editGachaById(id, request.payload);
@@ -85,17 +110,28 @@ class GachasHandler {
                 message: 'Gacha berhasil diperbarui',
             };
         } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
             const response = h.response({
-                status: 'fail',
-                message: error.message,
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
             });
-            response.code(404);
+            response.code(500);
+            console.error(error);
             return response;
         }
     }
 
     putStatusGachaByIdHandler(request, h) {
         try {
+            this._validator.validateNotePayload(request.payload);
             const { id } = request.params;
 
             this._service.editStatusGachaById(id, request.payload);
@@ -105,11 +141,21 @@ class GachasHandler {
                 message: 'Status Gacha berhasil diperbarui',
             };
         } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
             const response = h.response({
-                status: 'fail',
-                message: error.message,
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
             });
-            response.code(404);
+            response.code(500);
+            console.error(error);
             return response;
         }
     }
@@ -123,11 +169,21 @@ class GachasHandler {
                 message: 'Gacha berhasil dihapus',
             }
         } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
             const response = h.response({
-                status: 'fail',
-                message: error.message,
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
             });
-            response.code(404);
+            response.code(500);
+            console.error(error);
             return response;
         }
     }

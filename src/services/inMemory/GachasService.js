@@ -1,4 +1,6 @@
 const { nanoid } = require("nanoid");
+const InvariantError = require("../../exceptions/InvariantError");
+const NotFoundError = require("../../exceptions/NotFoundError");
 
 class GachasService {
     constructor(){
@@ -19,7 +21,7 @@ class GachasService {
         const isSuccess = this._gachas.filter((gacha) => gacha.id === id).length > 0;
 
         if (!isSuccess){
-            throw new Error('Gacha gagal ditambahkan');
+            throw new InvariantError('Gacha gagal ditambahkan');
         }
 
         return id;
@@ -32,7 +34,7 @@ class GachasService {
     getGachaById(id) {
         const gacha = this._gachas.filter((n) => n.id === id)[0];
         if (!gacha){
-            throw new Error('Gacha tidak ditemukan');
+            throw new NotFoundError('Gacha tidak ditemukan');
         }
         return gacha;
     }
@@ -41,7 +43,7 @@ class GachasService {
         const index = this._gachas.findIndex((gacha => gacha.id === id));
 
         if (index === -1) {
-            throw new Error('Gagal memperbarui gacha. Id tidak ditemukan');
+            throw new NotFoundError('Gagal memperbarui gacha. Id tidak ditemukan');
         }
 
         const updatedAt = new Date().toISOString();
@@ -62,7 +64,7 @@ class GachasService {
         const index = this._gachas.findIndex((gacha => gacha.id === id));
 
         if (index === -1) {
-            throw new Error('Gagal memperbarui status gacha. Id tidak ditemukan');
+            throw new NotFoundError('Gagal memperbarui status gacha. Id tidak ditemukan');
         }
 
         const updatedAt = new Date().toISOString();
@@ -79,7 +81,7 @@ class GachasService {
         const index = this._gachas.findIndex((gacha) => gacha.id === id);
 
         if (index === -1) {
-            throw new Error('Gacha gagal dihapus. Id tidak ditemukan');
+            throw new NotFoundError('Gacha gagal dihapus. Id tidak ditemukan');
         }
 
         this._gachas.splice(index, 1);
