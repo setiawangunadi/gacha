@@ -13,12 +13,12 @@ class GachasHandler {
         this.deleteGachaByIdHandler = this.deleteGachaByIdHandler.bind(this);
     }
 
-    postGachaHandler(request, h) {
+    async postGachaHandler(request, h) {
         try {
             this._validator.validateGachaPayload(request.payload);
-            const { name, urlPhoto, position, number, isGet, totalGet } = request.payload;
+            const { name, url_photo, position, number, is_get, total_get } = request.payload;
 
-            const gachaId = this._service.addGacha({ name, urlPhoto, position, number, isGet, totalGet });
+            const gachaId = await this._service.addGacha({ name, url_photo, position, number, is_get, total_get });
     
             const response = h.response({
                 status: 'success',
@@ -49,9 +49,9 @@ class GachasHandler {
         }
     }
 
-    getAllGachasHandler(request, h) {
+    async getAllGachasHandler(request, h) {
         try {
-            const gachas = this._service.getGachas();
+            const gachas = await this._service.getGachas();
             return {
                 status: 'success',
                 data: {
@@ -68,10 +68,10 @@ class GachasHandler {
         }
     }
 
-    getGachaByIdHandler(request, h) {
+    async getGachaByIdHandler(request, h) {
         try {
             const { id } = request.params;
-            const gacha = this._service.getGachaById(id);
+            const gacha = await this._service.getGachaById(id);
             return {
                 status: 'success',
                 data: {
@@ -98,12 +98,13 @@ class GachasHandler {
         }
     }
 
-    putGachaByIdHandler(request, h) {
+    async putGachaByIdHandler(request, h) {
         try {
-            this._validator.validateNotePayload(request.payload);
+            this._validator.validateGachaPayload(request.payload);
+            const { name, url_photo, position, number, is_get, total_get } = request.payload;
             const { id } = request.params;
 
-            this._service.editGachaById(id, request.payload);
+            await this._service.editGachaById(id, { name, url_photo, position, number, is_get, total_get });
     
             return {
                 status: 'success',
@@ -129,12 +130,13 @@ class GachasHandler {
         }
     }
 
-    putStatusGachaByIdHandler(request, h) {
+    async putStatusGachaByIdHandler(request, h) {
         try {
-            this._validator.validateNotePayload(request.payload);
+            this._validator.validateGachaPayload(request.payload);
+            const { is_get, total_get } = request.payload;
             const { id } = request.params;
 
-            this._service.editStatusGachaById(id, request.payload);
+            await this._service.editStatusGachaById(id, { is_get, total_get });
     
             return {
                 status: 'success',
@@ -160,10 +162,10 @@ class GachasHandler {
         }
     }
 
-    deleteGachaByIdHandler(request, h) {
+    async deleteGachaByIdHandler(request, h) {
         try {
             const { id } = request.params;
-            this._service.deleteGachaById(id);
+            await this._service.deleteGachaById(id);
             return {
                 status: 'success',
                 message: 'Gacha berhasil dihapus',

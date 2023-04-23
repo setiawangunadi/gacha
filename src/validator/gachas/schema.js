@@ -1,12 +1,12 @@
 const Joi = require("joi");
 
 const GachaPayloadSchema = Joi.object({
-    name: Joi.string().required(),
-    urlPhoto: Joi.string().required(),
-    position: Joi.string().required(),
-    number: Joi.string().required(),
-    isGet : Joi.boolean().required(),
-    totalGet : Joi.number().required(),
+    name: Joi.string(),
+    url_photo: Joi.string(),
+    position: Joi.string(),
+    number: Joi.string(),
+    is_get : Joi.boolean().required(),
+    total_get : Joi.number().required(),
 });
 
 module.exports = { GachaPayloadSchema };

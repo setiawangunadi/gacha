@@ -67,10 +67,18 @@ class GachasService {
             throw new NotFoundError('Gagal memperbarui status gacha. Id tidak ditemukan');
         }
 
+        const name = this._gachas.filter(gacha => gacha.name);
+        const urlPhoto = this._gachas.filter(gacha => gacha.urlPhoto);
+        const position = this._gachas.filter(gacha => gacha.position);
+        const number = this._gachas.filter(gacha => gacha.number);
         const updatedAt = new Date().toISOString();
 
         this._gachas[index] = {
             ...this._gachas[index],
+            name,
+            urlPhoto,
+            position,
+            number,
             isGet,
             totalGet,
             updatedAt,

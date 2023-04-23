@@ -1,1 +1,4 @@
 gacha-api-webserver.pem
+node_modules
+.env
+.prod.env
