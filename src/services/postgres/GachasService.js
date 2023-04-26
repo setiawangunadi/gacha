@@ -33,10 +33,10 @@ class GachasService{
         return result.rows.map(mapGachaToModel);
     }
 
-    async getGachaById(id) {
+    async getGachaById(number) {
         const query = {
-            text: 'SELECT * FROM gachas WHERE id = $1',
-            values: [id],
+            text: 'SELECT * FROM gachas WHERE number = $1',
+            values: [number],
         };
 
         const result = await this._pool.query(query);
