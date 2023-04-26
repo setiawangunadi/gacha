@@ -21,8 +21,18 @@ const routes = (handler) => [
     },
     {
         method: 'GET',
-        path: '/gacha/{id}',
+        path: '/gacha/{number}',
         handler: handler.getGachaByIdHandler,
+        options: {
+            cors: {
+                origin: ['*'],
+            }
+        },
+    },
+    {
+        method: 'GET',
+        path: '/gacha/position/{position}',
+        handler: handler.getGachaByPositionHandler,
         options: {
             cors: {
                 origin: ['*'],

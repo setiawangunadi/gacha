@@ -48,6 +48,21 @@ class GachasService{
         return result.rows.map(mapGachaToModel)[0];
     }
 
+    async getGachaByPosition(position) {
+        const query = {
+            text: 'SELECT * FROM gachas WHERE position = $1',
+            values: [position],
+        };
+
+        const result = await this._pool.query(query);
+
+        if (!result.rows.length) {
+            throw new NotFoundError('Gacha tidak ditemukan');
+        }
+
+        return result.rows.map(mapGachaToModel);
+    }
+
     async editGachaById(id, { name, url_photo, position, number, is_get, total_get }){
         const updatedAt = new Date().toISOString();
         const query = {

@@ -8,6 +8,7 @@ class GachasHandler {
         this.postGachaHandler = this.postGachaHandler.bind(this);
         this.getAllGachasHandler = this.getAllGachasHandler.bind(this);
         this.getGachaByIdHandler = this.getGachaByIdHandler.bind(this);
+        this.getGachaByPositionHandler = this.getGachaByPositionHandler.bind(this);
         this.putGachaByIdHandler = this.putGachaByIdHandler.bind(this);
         this.putStatusGachaByIdHandler = this.putStatusGachaByIdHandler.bind(this);
         this.deleteGachaByIdHandler = this.deleteGachaByIdHandler.bind(this);
@@ -70,8 +71,38 @@ class GachasHandler {
 
     async getGachaByIdHandler(request, h) {
         try {
-            const { id } = request.params;
-            const gacha = await this._service.getGachaById(id);
+            const { number } = request.params;
+            const gacha = await this._service.getGachaById(number);
+            return {
+                status: 'success',
+                data: {
+                    gacha
+                },
+            };    
+        } catch (error) {
+            if (error instanceof ClientError){
+                const response = h.response({
+                    status: 'fail',
+                    message: error.message,
+                });
+                response.code(400);
+                return response;
+            }
+            // Server ERROR!
+            const response = h.response({
+                status: 'error',
+                message: 'Maaf, terjadi kegagalan pada server kami.',
+            });
+            response.code(500);
+            console.error(error);
+            return response;
+        }
+    }
+
+    async getGachaByPositionHandler(request, h) {
+        try {
+            const { position } = request.params;
+            const gacha = await this._service.getGachaByPosition(position);
             return {
                 status: 'success',
                 data: {
